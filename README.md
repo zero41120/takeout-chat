@@ -32,3 +32,11 @@ bun run lint
 # Production build
 bun run build
 ```
+
+## Deployment
+
+```bash
+bun run deploy
+```
+
+This builds `dist` and publishes it to the `gh-pages` branch.
