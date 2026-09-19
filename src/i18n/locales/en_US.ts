@@ -23,6 +23,12 @@ const en_US = {
   "helper.optional": "Optional",
   "helper.hint": "Unlocks stream timestamps plus channel names and pictures.",
   "helper.extension": "Tampermonkey for {{browser}}",
+  "helper.setupInfo": "How to enable",
+  "helper.infoTitle": "Enable Tampermonkey user scripts",
+  "helper.infoDescription":
+    "After installing Tampermonkey, open its extension settings and turn on Allow User Scripts.",
+  "helper.infoImageAlt": "Tampermonkey extension settings with Allow User Scripts enabled",
+  "helper.closeInfo": "Close instructions",
   "helper.install": "Install helper script",
   "helper.connected": "Helper connected",
   "helper.notConnected": "Helper not connected",

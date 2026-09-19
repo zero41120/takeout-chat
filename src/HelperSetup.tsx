@@ -1,4 +1,5 @@
-import { ArrowUpRight, Puzzle } from "lucide-react";
+import { ArrowUpRight, Info, Puzzle, X } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { checkStreamHelper, useStreamInfo } from "./stream-info";
 
@@ -30,10 +31,13 @@ function getBrowserStores() {
 
 export function HelperSetup() {
   const { t } = useTranslation();
+  const [showSetupInfo, setShowSetupInfo] = useState(false);
   const connected = useStreamInfo((state) => state.connected);
   const checking = useStreamInfo((state) => state.checking);
   const browserLinks = getBrowserStores();
+  const isFirefox = /Firefox\//.test(navigator.userAgent);
   const installScriptUrl = `${import.meta.env.BASE_URL}takeout-chat-stream-info.user.js`;
+  const setupImageUrl = `${import.meta.env.BASE_URL}tm_enable.png`;
   const dotClassName = connected ? "step-dot on" : "step-dot";
   const showRecheck = !connected;
 
@@ -61,6 +65,12 @@ export function HelperSetup() {
               <ArrowUpRight size={11} />
             </a>
           ))}
+          {!isFirefox && (
+            <button type="button" className="helper-info-trigger" onClick={() => setShowSetupInfo(true)}>
+              <Info size={12} />
+              {t("helper.setupInfo")}
+            </button>
+          )}
         </span>
       </span>
       <a className="takeout-step-action" href={installScriptUrl} target="_blank" rel="noreferrer">
@@ -82,6 +92,25 @@ export function HelperSetup() {
           </button>
         )}
       </span>
+      {showSetupInfo && !isFirefox && (
+        <div className="helper-info-backdrop" onClick={() => setShowSetupInfo(false)}>
+          <div className="helper-info-popup" onClick={(event) => event.stopPropagation()}>
+            <div className="helper-info-head">
+              <strong>{t("helper.infoTitle")}</strong>
+              <button
+                type="button"
+                className="helper-info-close"
+                onClick={() => setShowSetupInfo(false)}
+                title={t("helper.closeInfo")}
+              >
+                <X size={16} />
+              </button>
+            </div>
+            <p>{t("helper.infoDescription")}</p>
+            <img className="helper-info-image" src={setupImageUrl} alt={t("helper.infoImageAlt")} />
+          </div>
+        </div>
+      )}
     </section>
   );
 }
