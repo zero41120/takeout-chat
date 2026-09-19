@@ -107,8 +107,8 @@ const zh_TW: Record<keyof typeof en_US, string> = {
   "count.messages_other": "{{count}} 則訊息",
   "count.videos_one": "{{count}} 部影片",
   "count.videos_other": "{{count}} 部影片",
-  "count.matchingMessages_one": "{{count}} 則符合的訊息",
-  "count.matchingMessages_other": "{{count}} 則符合的訊息",
+  "count.matchedIn_one": "符合 {{count}} 則，來自",
+  "count.matchedIn_other": "符合 {{count}} 則，來自",
 
   "search.placeholder": "搜尋訊息內容…",
   "toolbar.superChats": "◇ 超級留言",
@@ -144,6 +144,8 @@ const zh_TW: Record<keyof typeof en_US, string> = {
   "message.empty": "空白訊息",
   "message.gift": "YouTube 禮物",
   "message.namedGift": "禮物：{{name}}",
+  "message.copyId": "複製訊息 ID",
+  "message.copiedId": "已複製訊息 ID",
 
   "showMore.label": "顯示更多",
   "showMore.remaining": "+{{count}} 筆剩餘",

@@ -106,8 +106,8 @@ const en_US = {
   "count.messages_other": "{{count}} MESSAGES",
   "count.videos_one": "{{count}} VIDEO",
   "count.videos_other": "{{count}} VIDEOS",
-  "count.matchingMessages_one": "{{count}} MATCHING MESSAGE",
-  "count.matchingMessages_other": "{{count}} MATCHING MESSAGES",
+  "count.matchedIn_one": "{{count}} MATCHED IN",
+  "count.matchedIn_other": "{{count}} MATCHED IN",
 
   "search.placeholder": "SEARCH MESSAGE TEXT...",
   "toolbar.superChats": "◇ SUPER CHATS",
@@ -143,6 +143,8 @@ const en_US = {
   "message.empty": "Empty message",
   "message.gift": "YouTube gift",
   "message.namedGift": "Gift: {{name}}",
+  "message.copyId": "Copy chat ID",
+  "message.copiedId": "Chat ID copied",
 
   "showMore.label": "SHOW MORE",
   "showMore.remaining": "+{{count}} REMAINING",

@@ -12,6 +12,7 @@ export type Message = {
   videoId: string;
   text: string;
   parts: MessagePart[];
+  file: string;
 };
 
 export function isGift(message: Pick<Message, "tokenCode" | "giftName">) {

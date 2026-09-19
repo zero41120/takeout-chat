@@ -1,5 +1,5 @@
-import { Gift } from "lucide-react";
-import type { ReactNode } from "react";
+import { Check, Gift, Hash } from "lucide-react";
+import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { channelKey, useChannelName } from "./channel-info";
 import { ChannelAvatar } from "./ChannelAvatar";
@@ -51,6 +51,7 @@ function renderMessagePart(part: MessagePart, index: number, query: string) {
 
 export function ChatMessage({ message, locale, query, canSeek, amount }: ChatMessageProps) {
   const { t } = useTranslation();
+  const [idCopied, setIdCopied] = useState(false);
   const channel = channelKey(message.authorId);
   const author = useChannelName(channel, message.authorName);
   const gift = isGift(message);
@@ -91,6 +92,22 @@ export function ChatMessage({ message, locale, query, canSeek, amount }: ChatMes
     </ChatTimestamp>
   );
 
+  const copyId = async () => {
+    await navigator.clipboard.writeText(message.id);
+    setIdCopied(true);
+    setTimeout(() => setIdCopied(false), 1500);
+  };
+  const idCopyButton = (
+    <button
+      type="button"
+      className={`chat-id-copy${idCopied ? " copied" : ""}`}
+      onClick={copyId}
+      title={idCopied ? t("message.copiedId") : t("message.copyId")}
+    >
+      {idCopied ? <Check size={11} /> : <Hash size={11} />}
+    </button>
+  );
+
   const isSuperChatMessage = isSuperChat(message);
   if (isSuperChatMessage) {
     const tier = superChatTier(message.price);
@@ -103,6 +120,7 @@ export function ChatMessage({ message, locale, query, canSeek, amount }: ChatMes
             {timestamp}
           </div>
           <strong>{amount}</strong>
+          {idCopyButton}
         </div>
         <p>{body}</p>
       </article>
@@ -116,6 +134,7 @@ export function ChatMessage({ message, locale, query, canSeek, amount }: ChatMes
         <div className="message-head">
           <b>{author}</b>
           {timestamp}
+          {idCopyButton}
         </div>
         <p>{body}</p>
       </div>

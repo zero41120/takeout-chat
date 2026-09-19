@@ -144,6 +144,7 @@ export function parseFile(source: string, fileName: string): Message[] {
         videoId: (row[video] || "unknown").trim(),
         text: content.text,
         parts: content.parts,
+        file: fileName,
       },
     ];
   });

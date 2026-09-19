@@ -37,6 +37,8 @@ export function VideoGroupCard({
   const canSeek = !isUnavailable;
   const title = meta?.title ?? t("video.unknownTitle", { id: group.videoId });
   const messageCount = group.items.length;
+  const sourceFiles = [...new Set(group.items.map((message) => message.file))];
+  const sourceFileLabel = sourceFiles.join(", ");
   const latestDateLabel = group.latest.toLocaleDateString(locale, {
     year: "numeric",
     month: "short",
@@ -94,7 +96,8 @@ export function VideoGroupCard({
         <div>
           <h3>{title}</h3>
           <p>
-            {channelLabel} · {latestDateLabel} · {t("count.matchingMessages", { count: messageCount })}
+            {channelLabel} · {latestDateLabel} · {t("count.matchedIn", { count: messageCount })}{" "}
+            <span className="source-file">{sourceFileLabel}</span>
           </p>
         </div>
         <VideoOpenLink videoId={group.videoId} />

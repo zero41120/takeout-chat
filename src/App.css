@@ -963,6 +963,15 @@ kbd {
   font: 13px var(--sans);
   letter-spacing: 0.02em;
 }
+.source-file {
+  display: inline-block;
+  padding: 1px 6px;
+  border: 1px solid var(--line2);
+  border-radius: 3px;
+  font: 11px var(--mono);
+  letter-spacing: normal;
+  color: var(--text);
+}
 .video-summary a {
   flex: none;
   width: 34px;
@@ -1131,6 +1140,33 @@ kbd {
   gap: 10px;
   padding: 10px 14px;
   border-bottom: 1px solid var(--line);
+}
+.chat-id-copy {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+.message:hover .chat-id-copy,
+.super-card:hover .chat-id-copy,
+.chat-id-copy:focus-visible {
+  opacity: 0.6;
+}
+.chat-id-copy:hover,
+.chat-id-copy:focus-visible,
+.chat-id-copy.copied {
+  opacity: 1 !important;
+  background: rgba(115, 115, 115, 0.12);
 }
 .message-body {
   min-width: 0;
