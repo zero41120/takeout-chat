@@ -3,6 +3,9 @@ const en_US = {
   "currency.unknown": "Unknown currency",
   "currency.excluded_one": "{{count}} amount without USD/TWD excluded",
   "currency.excluded_other": "{{count}} amounts without USD/TWD excluded",
+  "cache.size": "LOCAL CACHE {{size}}",
+  "cache.clear": "CLEAR CACHE",
+  "cache.clearTitle": "Remove cached video, stream, and channel data",
 
   "hero.title1": "Live Chat History",
   "hero.title2": "Explorer",

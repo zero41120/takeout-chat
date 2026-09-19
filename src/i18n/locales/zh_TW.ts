@@ -5,6 +5,9 @@ const zh_TW: Record<keyof typeof en_US, string> = {
   "currency.unknown": "未知幣別",
   "currency.excluded_one": "已排除 {{count}} 筆非美元／新台幣或幣別不明的金額",
   "currency.excluded_other": "已排除 {{count}} 筆非美元／新台幣或幣別不明的金額",
+  "cache.size": "本機快取 {{size}}",
+  "cache.clear": "清除快取",
+  "cache.clearTitle": "移除影片、直播與頻道的快取資料",
 
   "hero.title1": "直播聊天",
   "hero.title2": "探索器",

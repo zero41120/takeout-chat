@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { create } from "zustand";
+import { notifyCacheUpdated } from "./cache-storage";
 import { NAMESPACE, post, RESPONSE_EVENT, useStreamInfo } from "./stream-info";
 
 const CACHE_KEY = "chat-explorer-channel-profiles";
@@ -128,6 +129,7 @@ let requestSequence = 0;
 function writeCache() {
   try {
     localStorage.setItem(CACHE_KEY, JSON.stringify({ version: 1, channels: useChannels.getState().profiles }));
+    notifyCacheUpdated();
   } catch {}
 }
 
@@ -178,9 +180,20 @@ export function refreshChannelProfiles() {
   try {
     localStorage.removeItem(CACHE_KEY);
   } catch {}
+  notifyCacheUpdated();
   cancelInFlight();
   useChannels.setState({ profiles: {}, failed: {} });
   pump();
+}
+
+export function clearChannelCache() {
+  try {
+    localStorage.removeItem(CACHE_KEY);
+  } catch {}
+  cancelInFlight();
+  wanted.clear();
+  useChannels.setState({ profiles: {}, failed: {} });
+  notifyCacheUpdated();
 }
 
 export function requestChannelProfile(key: string | null) {

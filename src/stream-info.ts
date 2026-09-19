@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { notifyCacheUpdated } from "./cache-storage";
 
 export const NAMESPACE = "takeout-chat:stream-info:v1";
 export const RESPONSE_EVENT = `${NAMESPACE}:response`;
@@ -165,6 +166,7 @@ function finish(videoId: string, info: StreamInfo | null, error?: StreamInfoErro
   if (info) {
     try {
       localStorage.setItem(CACHE_KEY, JSON.stringify({ version: 1, videos: useStreamInfo.getState().videos }));
+      notifyCacheUpdated();
     } catch {}
   }
   request.resolve(info);
@@ -304,6 +306,20 @@ export function formatOffset(seconds: number) {
 export function clearChatSelection() {
   selections.clear();
   useStreamInfo.setState({ selected: {}, seeks: {} });
+}
+
+export function clearStreamInfoCache() {
+  try {
+    localStorage.removeItem(CACHE_KEY);
+  } catch {}
+  for (const request of requests.values()) {
+    clearTimeout(request.timeout);
+    request.resolve(null);
+  }
+  requests.clear();
+  selections.clear();
+  useStreamInfo.setState({ videos: {}, pending: {}, errors: {}, selected: {}, seeks: {} });
+  notifyCacheUpdated();
 }
 
 export function seekChatTime(videoId: string, timestamp: Date, seconds: number) {

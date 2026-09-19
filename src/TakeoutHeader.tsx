@@ -1,18 +1,34 @@
-import { ArrowUpRight, ChevronRight, Download, FolderOpen, RefreshCw, Upload, Video } from "lucide-react";
-import { useRef, useState } from "react";
+import { ArrowUpRight, ChevronRight, Download, FolderOpen, RefreshCw, Trash2, Upload, Video } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EMPTY_FILTERS, setDisplayCurrency, setFilters, setMessages, useChatExplorer } from "./chat-explorer-store";
+import { clearChannelCache } from "./channel-info";
+import { CACHE_UPDATED_EVENT, getCacheSizeBytes } from "./cache-storage";
+import {
+  EMPTY_FILTERS,
+  setDisplayCurrency,
+  setFilters,
+  setMessages,
+  setVideoMeta,
+  useChatExplorer,
+} from "./chat-explorer-store";
 import { DISPLAY_CURRENCIES, TWD_PER_USD } from "./currency";
 import { parseFile } from "./csv-import";
 import { HelperSetup } from "./HelperSetup";
 import { LANGUAGE_STORAGE_KEY, SUPPORTED_LANGUAGES, type SupportedLanguage } from "./i18n";
-import { clearChatSelection } from "./stream-info";
+import { clearChatSelection, clearStreamInfoCache } from "./stream-info";
 import { useVideoMetadata } from "./useVideoMetadata";
+import { clearVideoCache } from "./video-cache";
 
 const LANGUAGE_LABEL: Record<SupportedLanguage, string> = {
   en_US: "EN",
   zh_TW: "繁",
 };
+
+function formatCacheSize(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
 
 export function TakeoutHeader() {
   const { t, i18n } = useTranslation();
@@ -21,6 +37,7 @@ export function TakeoutHeader() {
   const { videoMeta, enriching, enrichStatus, pendingVideoIds, hydrateFromCache, enrichVideos } = useVideoMetadata();
   const [dragging, setDragging] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [cacheSizeBytes, setCacheSizeBytes] = useState(getCacheSizeBytes);
   const [sourceLabel, setSourceLabel] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const hasMessages = messages.length > 0;
@@ -31,6 +48,20 @@ export function TakeoutHeader() {
   const hasCachedVideoMetadata = videoMetadataCount > 0;
   const isFetchDisabled = hasNoMessages || enriching || hasNoPendingVideoIds;
   const isEnrichmentReady = hasMessages && hasNoPendingVideoIds;
+
+  useEffect(() => {
+    const updateCacheSize = () => setCacheSizeBytes(getCacheSizeBytes());
+    window.addEventListener(CACHE_UPDATED_EVENT, updateCacheSize);
+    return () => window.removeEventListener(CACHE_UPDATED_EVENT, updateCacheSize);
+  }, []);
+
+  const clearCache = () => {
+    clearStreamInfoCache();
+    clearVideoCache();
+    clearChannelCache();
+    setVideoMeta({});
+    clearChatSelection();
+  };
 
   const getEnrichActionLabel = () => {
     if (hasNoMessages) return t("enrich.needsData");
@@ -99,6 +130,19 @@ export function TakeoutHeader() {
   return (
     <header className="hero-header">
       <div className="header-top">
+        <div className="cache-control">
+          <span className="cache-size">{t("cache.size", { size: formatCacheSize(cacheSizeBytes) })}</span>
+          <button
+            type="button"
+            className="cache-clear"
+            onClick={clearCache}
+            disabled={cacheSizeBytes === 0}
+            title={t("cache.clearTitle")}
+          >
+            <Trash2 size={12} />
+            {t("cache.clear")}
+          </button>
+        </div>
         <div className="lang-switch" title={t("currency.rate", { rate: TWD_PER_USD })}>
           {DISPLAY_CURRENCIES.map((currency) => (
             <button

@@ -1,4 +1,5 @@
 import type { UnavailableVideo, VideoMeta, VideoResult } from "./app-types";
+import { notifyCacheUpdated } from "./cache-storage";
 
 const VIDEO_CACHE_KEY = "chat-explorer-video-meta";
 const UNAVAILABLE_CACHE_MS = 24 * 60 * 60 * 1000;
@@ -43,5 +44,13 @@ export function readVideoCache(): Record<string, VideoResult> {
 export function writeVideoCache(value: Record<string, VideoResult>) {
   try {
     localStorage.setItem(VIDEO_CACHE_KEY, JSON.stringify(value));
+    notifyCacheUpdated();
   } catch {}
+}
+
+export function clearVideoCache() {
+  try {
+    localStorage.removeItem(VIDEO_CACHE_KEY);
+  } catch {}
+  notifyCacheUpdated();
 }

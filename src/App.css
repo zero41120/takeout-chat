@@ -77,8 +77,45 @@ main {
 }
 .header-top {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   justify-content: flex-end;
   gap: 12px;
+}
+.cache-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--line2);
+  background: var(--surface);
+}
+.cache-size {
+  padding: 4px 9px;
+  color: var(--muted);
+  font: 600 12px var(--mono);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.cache-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 26px;
+  padding: 4px 9px;
+  border: 0;
+  border-left: 1px solid var(--line2);
+  background: transparent;
+  color: var(--soft);
+  font: 600 12px var(--sans);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.cache-clear:hover:not(:disabled) {
+  background: var(--text);
+  color: #fff;
+}
+.cache-clear:disabled {
+  color: #a3a3a3;
+  cursor: not-allowed;
 }
 .lang-switch {
   display: flex;
