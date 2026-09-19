@@ -2,6 +2,8 @@
 
 A private, client-side explorer for YouTube Live Chat history exported via Google Takeout. All parsing and processing runs locally in the browser.
 
+Live demo: [zero41120.github.io/takeout-chat](https://zero41120.github.io/takeout-chat/)
+
 ## Tech Stack & Architecture
 
 - **Runtime & Tooling:** [Bun](https://bun.sh), [Vite](https://vite.dev), TypeScript
